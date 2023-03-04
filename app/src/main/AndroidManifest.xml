@@ -12,7 +12,7 @@
         android:theme="@style/Theme.DnD"
         tools:targetApi="31">
         <activity
-            android:name=".DndActivity"
+            android:name=".activities.DndActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
