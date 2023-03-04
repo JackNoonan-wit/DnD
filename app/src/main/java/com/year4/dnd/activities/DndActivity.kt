@@ -9,25 +9,38 @@ import com.year4.dnd.models.DndModel
 import timber.log.Timber
 import timber.log.Timber.i
 
+
+
 class DndActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDndBinding
-    var dnd = DndModel()
+    var character = DndModel()
+    val characters = ArrayList<DndModel>()
+
+    fun add(character: DndModel): Boolean {
+        return characters.add(character)
+    }
+    fun addCharacter(){
+         add(DndModel(character.title))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityDndBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         Timber.plant(Timber.DebugTree())
-
         i("Dnd Activity started")
 
         binding.btnAdd.setOnClickListener() {
-            dnd.title = binding.dndTitle.text.toString()
-            if (dnd.title.isNotEmpty()) {
-                i("add Button Pressed: $dnd.title")
+            character.title = binding.dndTitle.text.toString()
+            if (character.title.isNotEmpty()) {
+                i("add Button Pressed: $character.title")
+                i("all characters: $characters")
+                for (i in characters.indices)
+
+
+                addCharacter()
+              //  println(listAllCharacters())
             }
             else {
                 Snackbar
