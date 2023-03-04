@@ -69,6 +69,9 @@ class DndActivity : AppCompatActivity() {
 
         binding.btnAdd.setOnClickListener() {
             character.title = binding.dndTitle.text.toString()
+            character.description = binding.description.text.toString()
+            character.age = binding.age.text.toString()
+            character.abilities = binding.abilities.text.toString()
             if (character.title.isNotEmpty()) {
                 characters.add(character.copy())
                 i("add Button Pressed: ${character}")

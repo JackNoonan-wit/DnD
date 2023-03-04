@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">DnD</string>
     <string name="button_addDnd">Add Character</string>
-    <string name="hint_dndTitle">Dnd Title</string>
+    <string name="hint_dndTitle">Character Name</string>
+    <string name="hint_dndDescription">Description </string>
+    <string name="hint_dndAbilities">Age </string>
 </resources>
