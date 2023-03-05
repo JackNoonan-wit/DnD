@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">DnD</string>
     <string name="button_addDnd">Add Character</string>
+    <string name="button_saveDnd">Save Characters</string>
     <string name="menu_Cancel">Cancel</string>
     <string name="hint_dndTitle">Character Name</string>
     <string name="hint_dndDescription">Description </string>

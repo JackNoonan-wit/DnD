@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.year4.dnd.org.year4.dnd.activities.DndActivity">
+    tools:context="com.year4.dnd.activities.DndActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -65,6 +65,7 @@
                     android:padding="8dp"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="14sp" />
+
                 <EditText
                     android:id="@+id/age"
                     android:layout_width="match_parent"
@@ -77,6 +78,7 @@
                     android:padding="8dp"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="14sp" />
+
                 <EditText
                     android:id="@+id/abilities"
                     android:layout_width="match_parent"
@@ -102,6 +104,7 @@
                     android:text="@string/button_addDnd"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp" />
+
             </LinearLayout>
         </ScrollView>
 
