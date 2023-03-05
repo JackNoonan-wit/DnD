@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import com.year4.dnd.R
 import com.year4.dnd.databinding.ActivityDndBinding
+import com.year4.dnd.main.MainApp
 import com.year4.dnd.models.DndModel
 import timber.log.Timber
 import timber.log.Timber.i
@@ -58,13 +59,15 @@ class DndActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDndBinding
     var character = DndModel()
-    val characters = ArrayList<DndModel>()
+   // val characters = ArrayList<DndModel>()
+    var app : MainApp? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDndBinding.inflate(layoutInflater)
         setContentView(binding.root)
        // Timber.plant(Timber.DebugTree())
+        app = application as MainApp
         i("Character Activity started")
 
         binding.btnAdd.setOnClickListener() {
@@ -72,11 +75,11 @@ class DndActivity : AppCompatActivity() {
             character.description = binding.description.text.toString()
             character.age = binding.age.text.toString()
             character.abilities = binding.abilities.text.toString()
-            if (character.title.isNotEmpty()) {
-                characters.add(character.copy())
-                i("add Button Pressed: ${character}")
-                for (i in characters.indices)
-                { i("Character[$i]:${this.characters[i]}") }
+            if (character.title.isNotEmpty()) {                 // characters.add(character.copy())
+                app!!.characters.add(character.copy())
+                i("add Button Pressed: ${character}")   //  for (i in characters.indices)
+                for (i in app!!.characters.indices)             // { i("Character[$i]:${this.characters[i]}") }
+                { i("Character[$i]:${this.app!!.characters[i]}") }
             }
             else {
                 Snackbar.make(it,"Please Enter a title", Snackbar.LENGTH_LONG)
