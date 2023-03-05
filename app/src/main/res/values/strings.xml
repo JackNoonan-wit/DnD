@@ -4,4 +4,5 @@
     <string name="hint_dndTitle">Character Name</string>
     <string name="hint_dndDescription">Description </string>
     <string name="hint_dndAbilities">Age </string>
+    <string name="hint_dndAge">Age </string>
 </resources>

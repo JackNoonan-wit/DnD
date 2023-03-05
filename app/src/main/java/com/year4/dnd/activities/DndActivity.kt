@@ -56,33 +56,28 @@ class DndActivity : AppCompatActivity() {
 }*/
 
 class DndActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityDndBinding
     var character = DndModel()
-   // val characters = ArrayList<DndModel>()
-    var app : MainApp? = null
+    lateinit var app : MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDndBinding.inflate(layoutInflater)
         setContentView(binding.root)
-       // Timber.plant(Timber.DebugTree())
-        app = application as MainApp
-        i("Character Activity started")
 
+        app = application as MainApp
+        i("Character Creator started")
         binding.btnAdd.setOnClickListener() {
             character.title = binding.dndTitle.text.toString()
             character.description = binding.description.text.toString()
-            character.age = binding.age.text.toString()
-            character.abilities = binding.abilities.text.toString()
-            if (character.title.isNotEmpty()) {                 // characters.add(character.copy())
-                app!!.characters.add(character.copy())
-                i("add Button Pressed: ${character}")   //  for (i in characters.indices)
-                for (i in app!!.characters.indices)             // { i("Character[$i]:${this.characters[i]}") }
-                { i("Character[$i]:${this.app!!.characters[i]}") }
+            if (character.title.isNotEmpty()) {
+                app.characters.add(character.copy())
+                i("add Button Pressed: ${character}")
+                for (i in app.characters.indices) {
+                    i("Character[$i]:${app.characters[i]}") }
             }
             else {
-                Snackbar.make(it,"Please Enter a title", Snackbar.LENGTH_LONG)
+                Snackbar.make(it,"Please Enter a name", Snackbar.LENGTH_LONG)
                     .show()
             }
         }
