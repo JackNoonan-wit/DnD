@@ -12,5 +12,8 @@ class MainApp : Application() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
         i("Character creator started started")
+        characters.add(DndModel("John", "irish"))
+        characters.add(DndModel("Sarah", "british"))
+        characters.add(DndModel("Jones", "german"))
     }
 }
