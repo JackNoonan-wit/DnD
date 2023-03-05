@@ -64,7 +64,7 @@ class DndActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDndBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Timber.plant(Timber.DebugTree())
+       // Timber.plant(Timber.DebugTree())
         i("Character Activity started")
 
         binding.btnAdd.setOnClickListener() {
