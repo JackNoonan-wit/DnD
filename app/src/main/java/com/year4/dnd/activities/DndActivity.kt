@@ -2,6 +2,8 @@ package com.year4.dnd.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
 import com.year4.dnd.R
 import com.year4.dnd.databinding.ActivityDndBinding
@@ -60,10 +62,29 @@ class DndActivity : AppCompatActivity() {
     var character = DndModel()
     lateinit var app : MainApp
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_character, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_cancel -> {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityDndBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.toolbarAdd.title = title
+        setSupportActionBar(binding.toolbarAdd)
+
+
 
         app = application as MainApp
         i("Character Creator started")
@@ -77,11 +98,15 @@ class DndActivity : AppCompatActivity() {
                 i("add Button Pressed: ${character}")
                 for (i in app.characters.indices) {
                     i("Character[$i]:${app.characters[i]}") }
+                setResult(RESULT_OK)
+                finish()
             }
             else {
                 Snackbar.make(it,"Please Enter a name", Snackbar.LENGTH_LONG)
                     .show()
             }
         }
+
     }
 }
+
