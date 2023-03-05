@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.year4.dnd.R
+import com.year4.dnd.adapters.CharacterAdapter
 import com.year4.dnd.databinding.ActivityCharacterListBinding
 import com.year4.dnd.databinding.CardCharacterBinding
 import com.year4.dnd.main.MainApp
@@ -66,7 +67,7 @@ class CharacterListActivity : AppCompatActivity() {
 
 }
 
-class CharacterAdapter constructor(private var characters: List<DndModel>) :
+/*class CharacterAdapter constructor(private var characters: List<DndModel>) :
     RecyclerView.Adapter<CharacterAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -94,6 +95,6 @@ class CharacterAdapter constructor(private var characters: List<DndModel>) :
 
 
 
-}
+}*/
 
 
