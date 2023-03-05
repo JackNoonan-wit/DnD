@@ -3,6 +3,8 @@
     <string name="button_addDnd">Add Character</string>
     <string name="hint_dndTitle">Character Name</string>
     <string name="hint_dndDescription">Description </string>
-    <string name="hint_dndAbilities">Age </string>
+    <string name="hint_dndAbilities">Abilities </string>
     <string name="hint_dndAge">Age </string>
+    <string name="menu_addCharacter">Add</string>
+
 </resources>

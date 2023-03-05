@@ -3,9 +3,11 @@ package com.year4.dnd.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.year4.dnd.R
 import com.year4.dnd.databinding.ActivityCharacterListBinding
 import com.year4.dnd.databinding.CardCharacterBinding
 import com.year4.dnd.main.MainApp
@@ -20,6 +22,8 @@ class CharacterListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCharacterListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.toolbar.title = title
+        setSupportActionBar(binding.toolbar)
 
         app = application as MainApp
 
@@ -27,6 +31,12 @@ class CharacterListActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = CharacterAdapter(app.characters)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
 }
 
 class CharacterAdapter constructor(private var characters: List<DndModel>) :
