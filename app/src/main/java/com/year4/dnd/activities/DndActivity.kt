@@ -62,11 +62,13 @@ class DndActivity : AppCompatActivity() {
 
 
 
-private val Api = DndActivity(JSONSerializer(File("characters.json")))
+//  private val Api = DndActivity(JSONSerializer(File("characters.json")))
 
-    class DndActivity (serializerType: Serializer): AppCompatActivity() {
+//  class DndActivity (serializerType: Serializer): AppCompatActivity() {
 
-            private var serializer: Serializer = serializerType
+   class DndActivity : AppCompatActivity() {
+
+        //    private var serializer: Serializer = serializerType
 
         private lateinit var binding: ActivityDndBinding
         var character = DndModel()
@@ -105,7 +107,8 @@ private val Api = DndActivity(JSONSerializer(File("characters.json")))
                 character.abilities = binding.abilities.text.toString()
                 character.age = binding.age.text.toString()
                 if (character.title.isNotEmpty() && character.description.isNotEmpty() && character.abilities.isNotEmpty() && character.age.isNotEmpty()) {
-                    app.characters.add(Api.character.copy())
+                  //  app.characters.add(Api.character.copy())
+                    app.characters.add(character.copy())
                     i("add Button Pressed: ${character}")
                     for (i in app.characters.indices) {
                         i("Character[$i]:${app.characters[i]}")
@@ -119,19 +122,21 @@ private val Api = DndActivity(JSONSerializer(File("characters.json")))
 
             }
 
-            fun store() {
-                serializer.write(character)
-            }
-           /*
-            binding.btnSave.setOnClickListener() {
-                fun save() {
-                    try {
-                        store()
-                    } catch (e: Exception) {
-                        System.err.println("Error writing to file: $e")
-                    }
-                }
-            }*/
+
+            /*
+                      fun store() {
+                          serializer.write(character)
+                      }
+
+                      binding.btnSave.setOnClickListener() {
+                          fun save() {
+                              try {
+                                  store()
+                              } catch (e: Exception) {
+                                  System.err.println("Error writing to file: $e")
+                              }
+                          }
+                      }*/
 
 
 
