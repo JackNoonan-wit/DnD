@@ -13,12 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.year4.dnd.R
 import com.year4.dnd.adapters.CharacterAdapter
+import com.year4.dnd.adapters.CharacterListener
 import com.year4.dnd.databinding.ActivityCharacterListBinding
 import com.year4.dnd.databinding.CardCharacterBinding
 import com.year4.dnd.main.MainApp
 import com.year4.dnd.models.DndModel
 
-class CharacterListActivity : AppCompatActivity() {
+
+
+class CharacterListActivity : AppCompatActivity(), CharacterListener  {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityCharacterListBinding
@@ -34,7 +37,8 @@ class CharacterListActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = CharacterAdapter(app.characters)
+        //binding.recyclerView.adapter = CharacterAdapter(app.characters)
+        binding.recyclerView.adapter = CharacterAdapter(app.characters.findAll(),this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -59,11 +63,26 @@ class CharacterListActivity : AppCompatActivity() {
         ) {
             if (it.resultCode == Activity.RESULT_OK) {
                 (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.characters.size)
+               // notifyItemRangeChanged(0,app.characters.size)
+                notifyItemRangeChanged(0,app.characters.findAll().size)
             }
         }
 
+    override fun onCharacterClick(character: DndModel) {
+        val launcherIntent = Intent(this, DndActivity::class.java)
+        launcherIntent.putExtra("character_edit", character)
+        getClickResult.launch(launcherIntent)
+    }
 
+    private val getClickResult =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                (binding.recyclerView.adapter)?.
+                notifyItemRangeChanged(0,app.characters.findAll().size)
+            }
+        }
 
 }
 

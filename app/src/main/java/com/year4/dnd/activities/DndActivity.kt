@@ -101,6 +101,13 @@ class DndActivity : AppCompatActivity() {
 
             app = application as MainApp
             i("Character Creator started")
+
+            if (intent.hasExtra("character_edit")) {
+                character = intent.extras?.getParcelable("placemark_edit")!!
+                binding.dndTitle.setText(character.title)
+                binding.description.setText(character.description)
+            }
+
             binding.btnAdd.setOnClickListener() {
                 character.title = binding.dndTitle.text.toString()
                 character.description = binding.description.text.toString()
@@ -108,15 +115,15 @@ class DndActivity : AppCompatActivity() {
                 character.age = binding.age.text.toString()
                 if (character.title.isNotEmpty() && character.description.isNotEmpty() && character.abilities.isNotEmpty() && character.age.isNotEmpty()) {
                   //  app.characters.add(Api.character.copy())
-                    app.characters.add(character.copy())
-                    i("add Button Pressed: ${character}")
-                    for (i in app.characters.indices) {
-                        i("Character[$i]:${app.characters[i]}")
-                    }
+                    app.characters.create(character.copy())
+                   // i("add Button Pressed: ${character}")
+                    // for (i in app.characters.indices) {}
+                    //  i("Character[$i]:${app.characters[i]}")
+                   // }
                     setResult(RESULT_OK)
                     finish()
-                } else {
-                    Snackbar.make(it, "Please Fill Out All Fields", Snackbar.LENGTH_LONG)
+                }  else {
+                    Snackbar.make(it,R.string.enter_character_name, Snackbar.LENGTH_LONG)
                         .show()
                 }
 

@@ -8,5 +8,6 @@
     <string name="hint_dndAbilities">Abilities </string>
     <string name="hint_dndAge">Age </string>
     <string name="menu_addCharacter">Add</string>
+    <string name="enter_character_name"> Please enter the Character's Name </string>
 
 </resources>
