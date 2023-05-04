@@ -68,88 +68,77 @@ class DndActivity : AppCompatActivity() {
 
    class DndActivity : AppCompatActivity() {
 
-        //    private var serializer: Serializer = serializerType
+       //    private var serializer: Serializer = serializerType
 
-        private lateinit var binding: ActivityDndBinding
-        var character = DndModel()
-        lateinit var app: MainApp
+       private lateinit var binding: ActivityDndBinding
+       var character = DndModel()
+       lateinit var app: MainApp
 
-        override fun onCreateOptionsMenu(menu: Menu): Boolean {
-            menuInflater.inflate(R.menu.menu_character, menu)
-            return super.onCreateOptionsMenu(menu)
-        }
+       override fun onCreateOptionsMenu(menu: Menu): Boolean {
+           menuInflater.inflate(R.menu.menu_character, menu)
+           return super.onCreateOptionsMenu(menu)
+       }
 
-        override fun onOptionsItemSelected(item: MenuItem): Boolean {
-            when (item.itemId) {
-                R.id.item_cancel -> {
-                    finish()
-                }
-            }
-            return super.onOptionsItemSelected(item)
-        }
+       override fun onOptionsItemSelected(item: MenuItem): Boolean {
+           when (item.itemId) {
+               R.id.item_cancel -> {
+                   finish()
+               }
+           }
+           return super.onOptionsItemSelected(item)
+       }
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-
-            binding = ActivityDndBinding.inflate(layoutInflater)
-            setContentView(binding.root)
-
-            binding.toolbarAdd.title = title
-            setSupportActionBar(binding.toolbarAdd)
+       override fun onCreate(savedInstanceState: Bundle?) {
 
 
+           super.onCreate(savedInstanceState)
 
-            app = application as MainApp
-            i("Character Creator started")
+           binding = ActivityDndBinding.inflate(layoutInflater)
+           setContentView(binding.root)
 
-            if (intent.hasExtra("character_edit")) {
-                character = intent.extras?.getParcelable("placemark_edit")!!
-                binding.dndTitle.setText(character.title)
-                binding.description.setText(character.description)
-            }
-
-            binding.btnAdd.setOnClickListener() {
-                character.title = binding.dndTitle.text.toString()
-                character.description = binding.description.text.toString()
-                character.abilities = binding.abilities.text.toString()
-                character.age = binding.age.text.toString()
-                if (character.title.isNotEmpty() && character.description.isNotEmpty() && character.abilities.isNotEmpty() && character.age.isNotEmpty()) {
-                  //  app.characters.add(Api.character.copy())
-                    app.characters.create(character.copy())
-                   // i("add Button Pressed: ${character}")
-                    // for (i in app.characters.indices) {}
-                    //  i("Character[$i]:${app.characters[i]}")
-                   // }
-                    setResult(RESULT_OK)
-                    finish()
-                }  else {
-                    Snackbar.make(it,R.string.enter_character_name, Snackbar.LENGTH_LONG)
-                        .show()
-                }
-
-            }
+           binding.toolbarAdd.title = title
+           setSupportActionBar(binding.toolbarAdd)
 
 
-            /*
-                      fun store() {
-                          serializer.write(character)
-                      }
-
-                      binding.btnSave.setOnClickListener() {
-                          fun save() {
-                              try {
-                                  store()
-                              } catch (e: Exception) {
-                                  System.err.println("Error writing to file: $e")
-                              }
-                          }
-                      }*/
+           var edit = false
+           if (intent.hasExtra("character_edit")) {
+               edit = true
+               character = intent.extras?.getParcelable("character_edit")!!
+               binding.dndTitle.setText(character.title)
+               binding.description.setText(character.description)
+               binding.btnAdd.setText(R.string.save_character)
+           }
 
 
+           app = application as MainApp
+           i("Character Creator started")
 
 
-        }
-    }
+           binding.btnAdd.setOnClickListener() {
+               character.title = binding.dndTitle.text.toString()
+               character.description = binding.description.text.toString()
+               character.abilities = binding.abilities.text.toString()
+               character.age = binding.age.text.toString()
+               if (character.title.isEmpty()) {
+                   Snackbar.make(it, R.string.enter_character_name, Snackbar.LENGTH_LONG).show()
+               } else {
+                   if (edit) {
+                       app.characters.update(character.copy())
+                   } else {
+                       app.characters.create(character.copy())
+                   }
+               }
+               setResult(RESULT_OK)
+               finish()
+           }
+           binding.chooseImage.setOnClickListener {
+               i("Select image")
+           }
+
+       }
+   }
+
+
 
 
 

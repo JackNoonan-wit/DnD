@@ -10,6 +10,8 @@
     <string name="menu_addCharacter">Add</string>
     <string name="enter_character_name"> Please enter the Characters Name </string>
     <string name="save_character"> Save Character </string>
+    <string name="button_addImage"> Add Image </string>
+
 
 
 </resources>

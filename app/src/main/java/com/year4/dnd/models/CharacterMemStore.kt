@@ -1,9 +1,8 @@
-package org.wit.placemark.models
+package com.year4.dnd.models
 
 import com.year4.dnd.models.CharacterStore
 import com.year4.dnd.models.DndModel
 
-package com.year4.dnd.models
 
 import timber.log.Timber.i
 
