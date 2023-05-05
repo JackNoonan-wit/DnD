@@ -185,6 +185,7 @@ import com.year4.dnd.databinding.ActivityDndBinding
 import com.year4.dnd.main.MainApp
 import com.year4.dnd.models.DndModel
 import com.year4.dnd.helpers.showImagePicker
+import com.year4.dnd.models.Location
 import timber.log.Timber.i
 
 class DndActivity : AppCompatActivity() {
@@ -193,9 +194,15 @@ class DndActivity : AppCompatActivity() {
     var character = DndModel()
     lateinit var app: MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+
+
     val IMAGE_REQUEST = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
 
         var edit = false
@@ -245,7 +252,23 @@ class DndActivity : AppCompatActivity() {
             showImagePicker(imageIntentLauncher)
         }
 
+        binding.characterLocation.setOnClickListener {
+            i ("Set Location Pressed")
+        }
+
+        /*binding.characterLocation.setOnClickListener {
+            val launcherIntent = Intent(this, MapActivity::class.java)
+            mapIntentLauncher.launch(launcherIntent)
+        }*/
+        binding.characterLocation.setOnClickListener {
+            val location = Location(52.245696, -7.139102, 15f)
+            val launcherIntent = Intent(this, MapActivity::class.java)
+                .putExtra("location", location)
+            mapIntentLauncher.launch(launcherIntent)
+        }
         registerImagePickerCallback()
+        registerMapCallback()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -281,6 +304,13 @@ class DndActivity : AppCompatActivity() {
                 }
             }
     }
+
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { i("Map Loaded") }
+    }
+
 }
 
 
