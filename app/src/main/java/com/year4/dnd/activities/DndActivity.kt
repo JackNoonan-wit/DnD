@@ -171,6 +171,7 @@ class DndActivity : AppCompatActivity() {
 
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -217,6 +218,9 @@ class DndActivity : AppCompatActivity() {
             Picasso.get()
                 .load(character.image)
                 .into(binding.characterImage)
+            if (character.image != Uri.EMPTY) {
+                binding.chooseImage.setText(R.string.change_character_image)
+            }
         }
 
         binding.btnAdd.setOnClickListener() {
@@ -270,6 +274,7 @@ class DndActivity : AppCompatActivity() {
                             Picasso.get()
                                 .load(character.image)
                                 .into(binding.characterImage)
+                            binding.chooseImage.setText(R.string.change_character_image)
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
