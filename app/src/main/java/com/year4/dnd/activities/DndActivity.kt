@@ -196,7 +196,7 @@ class DndActivity : AppCompatActivity() {
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
 
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
-    var location = Location(52.245696, -7.139102, 15f)
+   // var location = Location(52.245696, -7.139102, 15f)
 
 
     val IMAGE_REQUEST = 1
@@ -262,6 +262,12 @@ class DndActivity : AppCompatActivity() {
             mapIntentLauncher.launch(launcherIntent)
         }*/
         binding.characterLocation.setOnClickListener {
+            val location = Location(52.245696, -7.139102, 15f)
+            if (character.zoom != 0f) {
+                location.lat = character.lat
+                location.lng = character.lng
+                location.zoom = character.zoom
+            }
             val launcherIntent = Intent(this, MapActivity::class.java)
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
@@ -314,8 +320,11 @@ class DndActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Location ${result.data.toString()}")
-                            location = result.data!!.extras?.getParcelable("location")!!
+                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
                             i("Location == $location")
+                            character.lat = location.lat
+                            character.lng = location.lng
+                            character.zoom = location.zoom
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }

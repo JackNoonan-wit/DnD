@@ -32,6 +32,9 @@ class CharacterMemStore : CharacterStore {
             foundCharacter.title = character.title
             foundCharacter.description = character.description
             foundCharacter.image = character.image
+            foundCharacter.lat = character.lat
+            foundCharacter.lng = character.lng
+            foundCharacter.zoom = character.zoom
             logAll()
         }
     }

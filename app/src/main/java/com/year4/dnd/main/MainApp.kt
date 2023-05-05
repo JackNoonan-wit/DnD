@@ -4,16 +4,17 @@ import com.year4.dnd.models.DndModel
 import timber.log.Timber
 import timber.log.Timber.i
 import com.year4.dnd.models.CharacterMemStore
+import com.year4.dnd.models.CharacterStore
 
 
 class MainApp : Application() {
 
-    //val characters = ArrayList<DndModel>()
-    val characters = CharacterMemStore()
+    lateinit var characters: CharacterStore
 
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
+        characters = CharacterMemStore()
         i("Character creator started started")
         // characters.add(DndModel("John", "irish","26", "fireball"))
         // characters.add(DndModel("Sarah", "british","28", "fireball"))
