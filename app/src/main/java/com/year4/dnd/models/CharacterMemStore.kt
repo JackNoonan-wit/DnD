@@ -31,6 +31,7 @@ class CharacterMemStore : CharacterStore {
         if (foundCharacter != null) {
             foundCharacter.title = character.title
             foundCharacter.description = character.description
+            foundCharacter.image = character.image
             logAll()
         }
     }
