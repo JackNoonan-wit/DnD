@@ -1,30 +1,25 @@
 package com.year4.dnd.activities
 
-import android.app.Activity
-import android.content.Intent
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.year4.dnd.R
 import com.year4.dnd.adapters.CharacterAdapter
 import com.year4.dnd.adapters.CharacterListener
 import com.year4.dnd.databinding.ActivityCharacterListBinding
-import com.year4.dnd.databinding.CardCharacterBinding
 import com.year4.dnd.main.MainApp
 import com.year4.dnd.models.DndModel
 
 
-
-class CharacterListActivity : AppCompatActivity(), CharacterListener  {
+class CharacterListView : AppCompatActivity(), CharacterListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityCharacterListBinding
+    lateinit var presenter: CharacterListPresenter
+    private var position: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,13 +27,12 @@ class CharacterListActivity : AppCompatActivity(), CharacterListener  {
         setContentView(binding.root)
         binding.toolbar.title = title
         setSupportActionBar(binding.toolbar)
-
+        presenter = CharacterListPresenter(this)
         app = application as MainApp
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        //binding.recyclerView.adapter = CharacterAdapter(app.characters)
-        binding.recyclerView.adapter = CharacterAdapter(app.characters.findAll(),this)
+        loadPlacemarks()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -46,44 +40,32 @@ class CharacterListActivity : AppCompatActivity(), CharacterListener  {
         return super.onCreateOptionsMenu(menu)
     }
 
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.item_add -> {
-                val launcherIntent = Intent(this, DndActivity::class.java)
-                getResult.launch(launcherIntent)
-            }
+            R.id.item_add -> { presenter.doAddCharacter() }
+           // R.id.item_map -> { presenter.doShowCharactersMap() }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private val getResult =
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                (binding.recyclerView.adapter)?.
-               // notifyItemRangeChanged(0,app.characters.size)
-                notifyItemRangeChanged(0,app.characters.findAll().size)
-            }
-        }
-
-    override fun onCharacterClick(character: DndModel) {
-        val launcherIntent = Intent(this, DndActivity::class.java)
-        launcherIntent.putExtra("character_edit", character)
-        getClickResult.launch(launcherIntent)
+    override fun onCharacterClick(character: DndModel, position: Int) {
+        this.position = position
+        presenter.doEditCharacter(character, this.position)
     }
 
-    private val getClickResult =
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.characters.findAll().size)
-            }
-        }
+    private fun loadPlacemarks() {
+        binding.recyclerView.adapter = CharacterAdapter(presenter.getCharacters(), this)
+        onRefresh()
+    }
 
+    fun onRefresh() {
+        binding.recyclerView.adapter?.
+        notifyItemRangeChanged(0,presenter.getCharacters().size)
+    }
+
+    fun onDelete(position : Int) {
+        binding.recyclerView.adapter?.notifyItemRemoved(position)
+    }
 }
 
 /*class CharacterAdapter constructor(private var characters: List<DndModel>) :

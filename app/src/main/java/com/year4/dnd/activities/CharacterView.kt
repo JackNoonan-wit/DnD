@@ -169,169 +169,91 @@ class DndActivity : AppCompatActivity() {
    }
 */
 
-
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import com.year4.dnd.R
 import com.year4.dnd.databinding.ActivityDndBinding
-import com.year4.dnd.main.MainApp
 import com.year4.dnd.models.DndModel
-import com.year4.dnd.helpers.showImagePicker
-import com.year4.dnd.models.Location
 import timber.log.Timber.i
 
-class DndActivity : AppCompatActivity() {
+class CharacterView : AppCompatActivity() {
 
     private lateinit var binding: ActivityDndBinding
+    private lateinit var presenter: CharacterPresenter
     var character = DndModel()
-    lateinit var app: MainApp
-    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
-
-    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
-   // var location = Location(52.245696, -7.139102, 15f)
-
-
-    val IMAGE_REQUEST = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
         super.onCreate(savedInstanceState)
 
-        var edit = false
 
         binding = ActivityDndBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
 
-        app = application as MainApp
-
-        i("Character Creation started...")
-
-        if (intent.hasExtra("character_edit")) {
-            edit = true
-            character = intent.extras?.getParcelable("placemark_edit")!!
-            binding.dndTitle.setText(character.title)
-            binding.description.setText(character.description)
-            binding.btnAdd.setText(R.string.save_character)
-            Picasso.get()
-                .load(character.image)
-                .into(binding.characterImage)
-            if (character.image != Uri.EMPTY) {
-                binding.chooseImage.setText(R.string.change_character_image)
-            }
-        }
-
-        binding.btnAdd.setOnClickListener() {
-            character.title = binding.dndTitle.text.toString()
-            character.description = binding.description.text.toString()
-            if (character.title.isEmpty()) {
-                Snackbar.make(it,R.string.enter_character_name, Snackbar.LENGTH_LONG)
-                    .show()
-            } else {
-                if (edit) {
-                    app.characters.update(character.copy())
-                } else {
-                    app.characters.create(character.copy())
-                }
-            }
-            i("add Button Pressed: $character")
-            setResult(RESULT_OK)
-            finish()
-        }
+        presenter = CharacterPresenter(this)
 
         binding.chooseImage.setOnClickListener {
-            showImagePicker(imageIntentLauncher)
+            presenter.cacheCharacter(binding.dndTitle.text.toString(), binding.description.text.toString())
+            presenter.doSelectImage()
         }
 
         binding.characterLocation.setOnClickListener {
-            i ("Set Location Pressed")
+            presenter.cacheCharacter(binding.dndTitle.text.toString(), binding.description.text.toString())
+            presenter.doSetLocation()
         }
 
-        /*binding.characterLocation.setOnClickListener {
-            val launcherIntent = Intent(this, MapActivity::class.java)
-            mapIntentLauncher.launch(launcherIntent)
-        }*/
-        binding.characterLocation.setOnClickListener {
-            val location = Location(52.245696, -7.139102, 15f)
-            if (character.zoom != 0f) {
-                location.lat = character.lat
-                location.lng = character.lng
-                location.zoom = character.zoom
+        binding.btnAdd.setOnClickListener {
+            if (binding.dndTitle.text.toString().isEmpty()) {
+                Snackbar.make(binding.root, R.string.enter_character_name, Snackbar.LENGTH_LONG)
+                    .show()
+            } else {
+                presenter.doAddOrSave(binding.dndTitle.text.toString(), binding.description.text.toString())
             }
-            val launcherIntent = Intent(this, MapActivity::class.java)
-                .putExtra("location", location)
-            mapIntentLauncher.launch(launcherIntent)
         }
-
-        registerImagePickerCallback()
-        registerMapCallback()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_character, menu)
+        val deleteMenu: MenuItem = menu.findItem(R.id.item_delete)
+        deleteMenu.isVisible = presenter.edit
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.item_delete -> {
+                presenter.doDelete()
+            }
             R.id.item_cancel -> {
-                finish()
+                presenter.doCancel()
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun registerImagePickerCallback() {
-        imageIntentLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { result ->
-                when(result.resultCode){
-                    RESULT_OK -> {
-                        if (result.data != null) {
-                            i("Got Result ${result.data!!.data}")
-                            character.image = result.data!!.data!!
-                            Picasso.get()
-                                .load(character.image)
-                                .into(binding.characterImage)
-                            binding.chooseImage.setText(R.string.change_character_image)
-                        } // end of if
-                    }
-                    RESULT_CANCELED -> { } else -> { }
-                }
-            }
+    fun showCharacter(character: DndModel) {
+        binding.dndTitle.setText(character.title)
+        binding.description.setText(character.description)
+        binding.btnAdd.setText(R.string.save_character)
+        Picasso.get()
+            .load(character.image)
+            .into(binding.characterImage)
+        if (character.image != Uri.EMPTY) {
+            binding.chooseImage.setText(R.string.change_character_image)
+        }
     }
 
-    private fun registerMapCallback() {
-        mapIntentLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { result ->
-                when (result.resultCode) {
-                    RESULT_OK -> {
-                        if (result.data != null) {
-                            i("Got Location ${result.data.toString()}")
-                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
-                            i("Location == $location")
-                            character.lat = location.lat
-                            character.lng = location.lng
-                            character.zoom = location.zoom
-                        } // end of if
-                    }
-                    RESULT_CANCELED -> { } else -> { }
-                }
-            }
+    fun updateImage(image: Uri) {
+        i("Image updated")
+        Picasso.get()
+            .load(image)
+            .into(binding.characterImage)
+        binding.chooseImage.setText(R.string.change_character_image)
     }
-
 }
-
-

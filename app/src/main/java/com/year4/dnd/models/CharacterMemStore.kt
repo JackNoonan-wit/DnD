@@ -1,8 +1,5 @@
 package com.year4.dnd.models
 
-import com.year4.dnd.models.CharacterStore
-import com.year4.dnd.models.DndModel
-
 
 import timber.log.Timber.i
 
@@ -38,6 +35,10 @@ class CharacterMemStore : CharacterStore {
             logAll()
         }
     }
+    override fun delete(character: DndModel) {
+        characters.remove(character)
+    }
+
 
     private fun logAll() {
         characters.forEach { i("$it") }

@@ -8,7 +8,7 @@ import com.year4.dnd.databinding.CardCharacterBinding
 import com.year4.dnd.models.DndModel
 
 interface CharacterListener {
-    fun onCharacterClick(character: DndModel)
+    fun onCharacterClick(character: DndModel, position : Int)
 }
 
 /*class CharacterAdapter constructor(private var characters: List<DndModel>) :
@@ -46,6 +46,8 @@ class CharacterAdapter constructor(private var characters: List<DndModel>,
         return MainHolder(binding)
     }
 
+
+
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val character = characters[holder.adapterPosition]
         holder.bind(character, listener)
@@ -60,7 +62,10 @@ class CharacterAdapter constructor(private var characters: List<DndModel>,
             binding.dndTitle.text = character.title
             binding.description.text = character.description
             Picasso.get().load(character.image).resize(200,200).into(binding.imageIcon)
-            binding.root.setOnClickListener { listener.onCharacterClick(character) }
+            binding.root.setOnClickListener { listener.onCharacterClick(character, adapterPosition) }
         }
     }
+
 }
+
+
