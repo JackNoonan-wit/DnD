@@ -3,6 +3,7 @@ package com.year4.dnd.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import com.year4.dnd.databinding.CardCharacterBinding
 import com.year4.dnd.models.DndModel
 
@@ -58,6 +59,7 @@ class CharacterAdapter constructor(private var characters: List<DndModel>,
         fun bind(character: DndModel, listener: CharacterListener) {
             binding.dndTitle.text = character.title
             binding.description.text = character.description
+            Picasso.get().load(character.image).resize(200,200).into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onCharacterClick(character) }
         }
     }
